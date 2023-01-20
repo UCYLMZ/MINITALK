@@ -40,3 +40,22 @@ int	ft_atoi(const char *str)
 	}
 	return ((int)result);
 }
+
+void	troll_newline(int pid)
+{
+	kill(pid, SIGUSR2);
+	usleep(100);
+	kill(pid, SIGUSR2);
+	usleep(100);
+	kill(pid, SIGUSR2);
+	usleep(100);
+	kill(pid, SIGUSR2);
+	usleep(100);
+	kill(pid, SIGUSR1);
+	usleep(100);
+	kill(pid, SIGUSR2);
+	usleep(100);
+	kill(pid, SIGUSR1);
+	usleep(100);
+	kill(pid, SIGUSR2);
+}

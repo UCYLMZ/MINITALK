@@ -16,4 +16,7 @@
 # include "./src/PRINTF/ft_printf.h"
 # include <signal.h>
 
+int		ft_atoi(const char *str);
+void	troll_newline(int pid);
+
 #endif

@@ -12,65 +12,31 @@
 
 #include "minitalk.h"
 
-int	ft_atoi(const char *str)
+void	send_signal(int signal, int pid)
 {
-	long	result;
-	int		sign;
-	int		i;
-
-	result = 0;
-	sign = 1;
-	i = 0;
-	while ((str[i] >= 9 && str[i] <= 13) || (str[i] == 32))
-		i++;
-	if (str[i] == '-' || str[i] == '+')
-	{
-		if (str[i] == '-')
-			sign *= -1;
-		i++;
-	}
-	while (str[i] >= '0' && str[i] <= '9' && str[i])
-	{
-		result = result * 10 + (str[i] - 48) * sign;
-		if (result > 2147483647)
-			return (-1);
-		if (result < -2147483648)
-			return (0);
-		i++;
-	}
-	return ((int)result);
-}
-
-void	send_signal(int a, int pid)
-{
-	if (a % 2 == 1 || a % 2 == -1)
-	{
+	if (signal % 2 == 1 || signal % 2 == -1)
 		kill(pid, SIGUSR1);
-	}
-	else if (a % 2 == 0)
-	{
+	else if (signal % 2 == 0)
 		kill(pid, SIGUSR2);
-	}
-	usleep(100);
+	usleep(130);
 }
 
-void	ft_newline(int pid)
+void	send_pid(int c_pid, int pid)
 {
-	kill(pid, SIGUSR2);
-	usleep(100);
-	kill(pid, SIGUSR2);
-	usleep(100);
-	kill(pid, SIGUSR2);
-	usleep(100);
-	kill(pid, SIGUSR2);
-	usleep(100);
-	kill(pid, SIGUSR1);
-	usleep(100);
-	kill(pid, SIGUSR2);
-	usleep(100);
-	kill(pid, SIGUSR1);
-	usleep(100);
-	kill(pid, SIGUSR2);
+	static int		i;
+
+	while (i < 32)
+	{
+		send_signal(c_pid % 2, pid);
+		c_pid /= 2;
+		i++;
+	}
+}
+
+void feedback_receiver(signal)
+{
+	if (signal == SIGUSR1)
+		ft_printf("Your message received!");
 }
 
 void	convert_binary(char *str, int pid)
@@ -91,7 +57,7 @@ void	convert_binary(char *str, int pid)
 		}
 		i++;
 	}
-	ft_newline(pid);
+	troll_newline(pid);
 }
 
 int	main(int ac, char **av)
@@ -99,6 +65,7 @@ int	main(int ac, char **av)
 	char	*str;
 	int		pid;
 	int		c_pid;
+	signal(SIGUSR1, feedback_receiver);
 
 	if (ac != 3)
 	{
@@ -108,7 +75,6 @@ int	main(int ac, char **av)
 	pid = ft_atoi(av[1]);
 	c_pid = getpid();
 	str = av[2];
+	send_pid(c_pid, pid);
 	convert_binary(str, pid);
-	convert_binary(av[1], pid);
-	ft_printf("%s", av[1]);
 }

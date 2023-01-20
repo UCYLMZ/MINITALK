@@ -12,54 +12,51 @@
 
 #include "minitalk.h"
 
-void	message_feedback(int signal, char *value, int *i)
+int	signal_handler(int signal)
+{
+	static char	value;
+	static int	nl_flag;
+	static int	i;
+
+	if (signal == SIGUSR1)
+		value += 1 << (7 - i++);
+	else if (signal == SIGUSR2)
+		i++;
+	if (i == 8)
+	{
+		ft_printf("%c", value);
+		i = 0;
+		nl_flag = value;
+		value = 0;
+	}
+	if (nl_flag == 10)
+	{
+		nl_flag = 0;
+		return (0);
+	}
+	return (1);
+}
+
+void	message_feedback(int signal)
 {
 	static int	c_pid;
 	static int	j;
 
-	j = 32;
-	while (j > 0)
+	if (j < 32)
 	{
 		if (signal == SIGUSR1)
-		{
-			ft_printf("*%d", 1);
-			//c_pid += 1 << j;
-			j--;
-		}
-		else if (signal == SIGUSR2)
-		{
-			ft_printf("*%d", 0);
-			j--;
-		}
+			c_pid += 1 << j++;
+		if (signal == SIGUSR2)
+			j++;
 	}
-	ft_printf("%d", c_pid);
-	*value = 0;
-	*i = 7;
-}
-
-void	signal_handler(int signal)
-{
-	static char	value;
-	static int	i;
-
-	i = 7;
-	if (signal == SIGUSR1)
+	else
 	{
-		value += 1 << i;
-		i--;
-	}
-	else if (signal == SIGUSR2)
-		i--;
-	if (i == -1)
-	{
-		write(1, &value, 1);
-		if (value == '\n')
+		if (!signal_handler(signal))
 		{
-			message_feedback(signal, &value, &i);
-			return ;
+			kill(c_pid, SIGUSR1);
+			c_pid = 0;
+			j = 0;
 		}
-		i = 7;
-		value = 0;
 	}
 }
 
@@ -69,8 +66,8 @@ int	main(void)
 
 	pid = getpid();
 	ft_printf("pid: %d\n", pid);
-	signal(SIGUSR1, signal_handler);
-	signal(SIGUSR2, signal_handler);
+	signal(SIGUSR1, message_feedback);
+	signal(SIGUSR2, message_feedback);
 	while (1)
 	{
 		pause();
