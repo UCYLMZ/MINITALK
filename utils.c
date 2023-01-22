@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   untils.c                                           :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: uyilmaz <uyilmaz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 01:38:04 by uyilmaz           #+#    #+#             */
-/*   Updated: 2023/01/20 01:38:55 by uyilmaz          ###   ########.fr       */
+/*   Updated: 2023/01/22 16:23:32 by uyilmaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,18 +44,19 @@ int	ft_atoi(const char *str)
 void	troll_newline(int pid)
 {
 	kill(pid, SIGUSR2);
-	usleep(100);
+	usleep(130);
 	kill(pid, SIGUSR2);
-	usleep(100);
+	usleep(130);
 	kill(pid, SIGUSR2);
-	usleep(100);
+	usleep(130);
 	kill(pid, SIGUSR2);
-	usleep(100);
+	usleep(130);
 	kill(pid, SIGUSR1);
-	usleep(100);
+	usleep(130);
 	kill(pid, SIGUSR2);
-	usleep(100);
+	usleep(130);
 	kill(pid, SIGUSR1);
-	usleep(100);
+	usleep(130);
 	kill(pid, SIGUSR2);
+	usleep(130);
 }

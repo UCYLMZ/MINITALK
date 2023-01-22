@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.c                                           :+:      :+:    :+:   */
+/*   client_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: uyilmaz <uyilmaz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 11:57:55 by uyilmaz           #+#    #+#             */
-/*   Updated: 2023/01/22 16:47:35 by uyilmaz          ###   ########.fr       */
+/*   Updated: 2023/01/22 16:36:49 by uyilmaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	send_pid(int c_pid, int pid)
 void	feedback_receiver(int signal)
 {
 	if (signal == SIGUSR1)
-		(void)signal;
+		ft_printf("Your message received!");
 }
 
 void	convert_binary(char *str, int pid)
